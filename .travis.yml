@@ -1,4 +1,4 @@
-language: generic
+language: generic # https://app.travis-ci.com/github/GaryClarke/fib-multi-docker
 sudo: required
 services:
     - docker
