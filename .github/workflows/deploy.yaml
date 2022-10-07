@@ -1,4 +1,4 @@
-name: DockerReact
+name: FibMultiDocker
 on:
     push:
         branches:
