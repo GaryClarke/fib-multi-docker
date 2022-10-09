@@ -9,8 +9,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - run: docker build -t garyclarke/client-test -f ./client/Dockerfile.dev ./client
-            - run: docker run -e CI=true garyclarke/client-test npm test
+#            - run: docker build -t garyclarke/client-test -f ./client/Dockerfile.dev ./client
+#            - run: docker run -e CI=true garyclarke/client-test npm test
             - run: docker build -t garyclarke/ghactions-client ./client
             - run: docker build -t garyclarke/ghactions-nginx ./nginx
             - run: docker build -t garyclarke/ghactions-server ./server
