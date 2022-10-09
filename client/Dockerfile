@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-CMD ["npm", "run", "builder"]
+CMD ["npm", "run", "build"]
 
 
 # nginx
