@@ -1,53 +1,37 @@
 version: '3'
 
 services:
-    postgres:
-        image: 'postgres:latest'
-        environment:
-            - POSTGRES_PASSWORD=postgres_password
-    nginx:
-        restart: always
-        build:
-            dockerfile: Dockerfile.dev
-            context: ./nginx
-        ports:
-            - '3050:80'
-        depends_on:
-            - api
-            - client
-    redis:
-        image: 'redis:latest'
-    api:
-        build:
-            dockerfile: Dockerfile.dev
-            context: ./server
-        volumes:
-            - /app/node_modules
-            - ./server:/app
-        environment:
-            - REDIS_HOST=redis
-            - REDIS_PORT=6379
-            - PGUSER=postgres
-            - PGHOST=postgres
-            - PGDATABASE=postgres
-            - PGPASSWORD=postgres_password
-            - PGPORT=5432
     client:
-        build:
-            dockerfile: Dockerfile.dev
-            context: ./client
-        volumes:
-            - /app/node_modules # makes sure that this does not get written over by host data
-            - ./client:/app # everything inside the host client folder should be shared with container app folder
+        image: "garyclarke/ghactions-client"
+        mem_limit: 128m
+        hostname: client
+#        environment:
+#            - WDS_SOCKET_PORT=0
+    api:
+        image: "garyclarke/ghactions-server"
+        mem_limit: 128m
+        hostname: api
         environment:
-            - WDS_SOCKET_PORT=0
+            - REDIS_HOST=$REDIS_HOST
+            - REDIS_PORT=$REDIS_PORT
+            - PGUSER=$PGUSER
+            - PGHOST=$PGHOST
+            - PGDATABASE=$PGDATABASE
+            - PGPASSWORD=$PGPASSWORD
+            - PGPORT=$PGPORT
     worker:
-        build:
-            dockerfile: Dockerfile.dev
-            context: ./worker
-        volumes:
-            - /app/node_modules
-            - ./worker:/app
+        image: "garyclarke/ghactions-worker"
+        mem_limit: 128m
+        hostname: worker
         environment:
-            - REDIS_HOST=redis
-            - REDIS_PORT=6379
+            - REDIS_HOST=$REDIS_HOST
+            - REDIS_PORT=$REDIS_PORT
+    nginx:
+        image: "garyclarke/ghactions-nginx"
+        mem_limit: 128m
+        hostname: nginx
+        ports:
+            - "80:80"
+#        depends_on:
+#            - api
+#            - client
