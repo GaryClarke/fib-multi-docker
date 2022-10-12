@@ -21,17 +21,17 @@ jobs:
             - run: docker push garyclarke/ghactions-server
             - run: docker push garyclarke/ghactions-worker
 
-#            - name: Generate deployment package
-#              run: zip -r deploy.zip . -x '*.git*'
-#
-#            - name: Deploy to EB
-#              uses: einaregilsson/beanstalk-deploy@v18
-#              with:
-#                  aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-#                  aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-#                  application_name: udemydocker
-#                  environment_name: Udemydocker-env
-#                  existing_bucket_name: elasticbeanstalk-eu-west-1-234290944523
-#                  region: eu-west-1
-#                  version_label: ${{ github.sha }}
-#                  deployment_package: deploy.zip
+            - name: Generate deployment package
+              run: zip -r deploy.zip . -x '*.git*'
+
+            - name: Deploy to EB
+              uses: einaregilsson/beanstalk-deploy@v18
+              with:
+                  aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+                  aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+                  application_name: fib-docker
+                  environment_name: Fibdocker-env
+                  existing_bucket_name: elasticbeanstalk-eu-west-1-234290944523
+                  region: eu-west-1
+                  version_label: ${{ github.sha }}
+                  deployment_package: deploy.zip
